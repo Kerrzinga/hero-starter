@@ -139,9 +139,15 @@ var moves = {
         } else if (myHero.health < 100 && distanceToHealthWell === 1) {
             // Heal if you aren't full health and are close to a health well already
             return directionToHealthWell;
-        } else {
-            // If healthy, go capture a diamond mine!
+        } else if (helpers.findNearestNonTeamDiamondMine(gameData))  {
+            // If healthy, and there are mines to capture, go capture a diamond mine!
             return helpers.findNearestNonTeamDiamondMine(gameData);
+        } else if (myHero.health < 50) {
+            return helpers.findNearestHealthWell(gameData);
+        } else if (helpers.findNearestWeakerEnemy(gameData)) {
+            return helpers.findNearestWeakerEnemy(gameData);
+        } else {
+            return helpers.findNearestEnemy(gameData)
         }
     },
 
@@ -180,7 +186,7 @@ var moves = {
 };
 
 // Set our hero's strategy
-var move =  moves.aggressor;
+var move =  moves.safeDiamondMiner;
 
 // Export the move function here
 module.exports = move;
